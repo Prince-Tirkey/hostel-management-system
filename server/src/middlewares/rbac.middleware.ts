@@ -1,5 +1,6 @@
 import type { NextFunction, Response } from "express";
 import type { AuthenticatedRequest } from "./auth.middleware.js";
+
 export function requireRole(...roles: string[]) {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role))

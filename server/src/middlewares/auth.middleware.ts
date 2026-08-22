@@ -1,8 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+
 export interface AuthenticatedRequest extends Request {
   user?: { userId: string; role: string };
 }
+
 export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
   if (!header?.startsWith("Bearer "))

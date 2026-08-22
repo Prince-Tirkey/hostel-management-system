@@ -19,7 +19,7 @@ export function ComplaintsPage() {
   const [category, setCategory] = useState("OTHER");
   const [message, setMessage] = useState("");
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     const token = localStorage.getItem("accessToken");
     const res = await fetch("http://localhost:5000/api/complaints", {
