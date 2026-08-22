@@ -7,5 +7,5 @@ const router = Router();
 router.use(requireAuth);
 router.get("/", listComplaints);
 router.post("/", createComplaint);
-router.get("/ai/summary", requireRole("WARDEN","ADMIN","STUDENT_COORDINATOR"), supervisorSummary);
+router.get("/ai/summary", requireRole("WARDEN", "ADMIN", "STUDENT_COORDINATOR"), supervisorSummary);
 export default router;

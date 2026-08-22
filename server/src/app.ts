@@ -10,8 +10,22 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_URL ?? "http://localhost:5173", credentials: true }));
 app.use(express.json());
 
-app.get("/", (_req, res) => res.json({ success:true, message:"Smart Hostel Management API", data:null, timestamp:new Date().toISOString() }));
-app.get("/api/health", (_req, res) => res.json({ success:true, message:"API healthy", data:null, timestamp:new Date().toISOString() }));
+app.get("/", (_req, res) =>
+  res.json({
+    success: true,
+    message: "Smart Hostel Management API",
+    data: null,
+    timestamp: new Date().toISOString(),
+  }),
+);
+app.get("/api/health", (_req, res) =>
+  res.json({
+    success: true,
+    message: "API healthy",
+    data: null,
+    timestamp: new Date().toISOString(),
+  }),
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/complaints", complaintRoutes);

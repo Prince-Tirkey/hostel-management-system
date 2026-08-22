@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context/useAuth";
 import { login } from "../auth.api";
 
 export function LoginPage() {
@@ -21,8 +21,7 @@ export function LoginPage() {
       const data = await login({ email, password });
       saveSession(data.accessToken, data.user);
 
-      const from =
-        (location.state as { from?: string } | null)?.from ?? "/";
+      const from = (location.state as { from?: string } | null)?.from ?? "/";
 
       navigate(from, { replace: true });
     } catch (err) {

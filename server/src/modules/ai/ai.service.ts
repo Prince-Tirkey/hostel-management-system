@@ -7,6 +7,8 @@ export function classifyComplaint(input: { title: string; description: string })
   return provider.classifyComplaint(input);
 }
 
-export function summarizeComplaints(input: Array<{ title: string; description: string; category: string; severity: string }>) {
+export function summarizeComplaints(
+  input: Array<{ title: string; description: string; category: string; severity: string }>,
+) {
   return provider.summarizeComplaints(input);
 }

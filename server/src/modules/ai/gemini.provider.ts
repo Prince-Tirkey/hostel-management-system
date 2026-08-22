@@ -9,12 +9,18 @@ function getModel() {
 }
 
 function parseJson(text: string) {
-  const cleaned = text.replace(/^```json\s*/i, "").replace(/\s*```$/i, "").trim();
+  const cleaned = text
+    .replace(/^```json\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
   return JSON.parse(cleaned);
 }
 
 export class GeminiProvider implements AIProvider {
-  async classifyComplaint(input: { title: string; description: string }): Promise<ComplaintAIResult> {
+  async classifyComplaint(input: {
+    title: string;
+    description: string;
+  }): Promise<ComplaintAIResult> {
     const prompt = `Classify this hostel complaint. Return ONLY valid JSON with keys:
 category (HEALTH|MAINTENANCE|ELECTRICITY|PLUMBING|CLEANLINESS|WATER|INTERNET|SECURITY|MESS|OTHER),
 severity (LOW|MEDIUM|HIGH|CRITICAL), urgencyScore (0-100), priorityScore (0-100), reason (short string).
@@ -24,7 +30,9 @@ Complaint description: ${input.description}`;
     return parseJson(result.response.text()) as ComplaintAIResult;
   }
 
-  async summarizeComplaints(input: Array<{ title: string; description: string; category: string; severity: string }>): Promise<ComplaintSummaryResult> {
+  async summarizeComplaints(
+    input: Array<{ title: string; description: string; category: string; severity: string }>,
+  ): Promise<ComplaintSummaryResult> {
     const prompt = `Analyze these hostel complaints. Return ONLY valid JSON with:
 summary (short supervisor report) and hotTopics (array of objects with topic, count, severity).
 Identify repeated/common issues and major risks.

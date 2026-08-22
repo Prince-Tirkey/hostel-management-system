@@ -13,5 +13,7 @@ export interface ComplaintSummaryResult {
 
 export interface AIProvider {
   classifyComplaint(input: { title: string; description: string }): Promise<ComplaintAIResult>;
-  summarizeComplaints(input: Array<{ title: string; description: string; category: string; severity: string }>): Promise<ComplaintSummaryResult>;
+  summarizeComplaints(
+    input: Array<{ title: string; description: string; category: string; severity: string }>,
+  ): Promise<ComplaintSummaryResult>;
 }
