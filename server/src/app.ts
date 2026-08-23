@@ -5,6 +5,9 @@ import complaintRoutes from "./modules/complaints/complaint.routes.js";
 import noticeRoutes from "./modules/notices/notice.routes.js";
 import communityRoutes from "./modules/community/community.routes.js";
 import messRoutes from "./modules/mess/mess.routes.js";
+import helpRequesRoutes from "./modules/help-requests/help-request.routes.js";
+import helpOfferRoutes from "./modules/help-offers/help-offer.routes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -33,5 +36,10 @@ app.use("/api/complaints", complaintRoutes);
 app.use("/api/notices", noticeRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/mess", messRoutes);
+app.use("/api/help-requests", helpRequesRoutes);
+app.use("/api/help-offers", helpOfferRoutes);
+
+
+app.use(errorHandler);
 
 export default app;

@@ -11,7 +11,7 @@ import { UnauthorizedPage } from "../pages/UnauthorizedPage";
 export default function App() {
   return (
     <>
-      <nav className="nav">
+      {/* <nav className="nav">
         <strong>Smart Hostel</strong>
         <div>
           <Link to="/">Dashboard</Link>
@@ -21,7 +21,7 @@ export default function App() {
           <Link to="/community">Community</Link>
           <Link to="/login">Login</Link>
         </div>
-      </nav>
+      </nav> */}
 
       <main className="container">
         <Routes>

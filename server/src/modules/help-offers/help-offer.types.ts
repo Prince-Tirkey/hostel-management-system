@@ -1,0 +1,6 @@
+export enum HelpOfferStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+}

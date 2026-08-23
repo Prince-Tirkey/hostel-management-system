@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion, Variants } from "framer-motion";
 import { useAuth } from "../../../context/useAuth";
 import { login } from "../auth.api";
 
@@ -12,6 +13,7 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // Fixed the event typing here from React.SubmitEvent to React.FormEvent
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
@@ -21,66 +23,106 @@ export function LoginPage() {
       saveSession(data.accessToken, data.user);
 
       const from = (location.state as { from?: string } | null)?.from ?? "/";
-
       navigate(from, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     }
   }
 
+  // Framer Motion Variants for staggered entrance
+  const containerVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, staggerChildren: 0.1, ease: "easeOut" },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section className="mx-auto mt-16 w-full max-w-md rounded-2xl bg-white p-8 shadow-lg ring-1 ring-slate-200">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Welcome Back</h1>
-        <p className="mt-2 text-sm text-slate-500">Login to your Hostel Management account</p>
-      </div>
+    <section className="min-h-screen w-full flex items-center justify-center bg-slate-50 dark:bg-[#121212] p-4 transition-colors duration-300 font-sans">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-md overflow-hidden rounded-3xl bg-white dark:bg-slate-800 p-8 sm:p-10 shadow-2xl dark:shadow-[#FFD758]/5 border border-slate-100 dark:border-slate-700 relative"
+      >
+        {/* Top Decorative Gradient Bar */}
+        <div className="absolute top-0 left-0 h-2 w-full bg-gradient-to-r from-[#218DAE] to-[#2BBBD7] dark:from-[#FCE59A] dark:to-[#FFD758]" />
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700">
-            Email
-          </label>
+        <motion.div variants={itemVariants} className="mb-8 text-center mt-2">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Campus<span className="text-[#218DAE] dark:text-[#FFD758]">Nest</span>
+          </h1>
+          {/* <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            Welcome back! Sign in to manage your hostel.
+          </p> */}
+        </motion.div>
 
-          <input
-            id="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            required
-            placeholder="student@example.com"
-            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <motion.div variants={itemVariants}>
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="email"
+              required
+              placeholder="student@example.com"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3.5 text-sm text-slate-900 dark:text-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#2BBBD7] dark:focus:border-[#FFD758] focus:ring-2 focus:ring-[#2BBBD7]/20 dark:focus:ring-[#FFD758]/20"
+            />
+          </motion.div>
 
-        <div>
-          <label htmlFor="password" className="mb-2 block text-sm font-medium text-slate-700">
-            Password
-          </label>
+          <motion.div variants={itemVariants}>
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              required
+              placeholder="Enter your password"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-4 py-3.5 text-sm text-slate-900 dark:text-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#2BBBD7] dark:focus:border-[#FFD758] focus:ring-2 focus:ring-[#2BBBD7]/20 dark:focus:ring-[#FFD758]/20"
+            />
+          </motion.div>
 
-          <input
-            id="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            required
-            placeholder="Enter your password"
-            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-          />
-        </div>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-600 dark:text-red-400"
+            >
+              {error}
+            </motion.div>
+          )}
 
-        {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-            {error}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800"
-        >
-          Login
-        </button>
-      </form>
+          <motion.div variants={itemVariants}>
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              className="w-full rounded-xl bg-[#218DAE] dark:bg-[#FFD758] px-4 py-3.5 text-sm font-semibold text-white dark:text-slate-900 shadow-md transition-colors hover:bg-[#1a708a] dark:hover:bg-[#e6c24f] focus:outline-none focus:ring-2 focus:ring-[#2BBBD7] dark:focus:ring-[#FFD758] focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+            >
+              Login to Dashboard
+            </motion.button>
+          </motion.div>
+        </form>
+      </motion.div>
     </section>
   );
 }
